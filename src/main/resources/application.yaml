@@ -1,0 +1,65 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: convertTimeInput
+        input:
+          destination: convertTimeOutput
+          gruoup: currentTimeGroup
+
+        filterEventOutput:
+          destination: convertedEvents
+        filterEventInput:
+          destination: convertedEvents
+        eventInput:
+          destination: events
+          group: sportEventsGroup
+          consumer:
+            maxAttempts: 5
+            backOffInitialInterval: 1000
+            retryable-exceptions:
+              java.lang.IllegalArgumentException: false
+        eventOutput:
+          destination: events
+
+        convertNumberInput:
+          group: numberConvertGroup
+          destination: numberConvert
+          consumer:
+            maxAttempts: 3
+            backOffInitialInterval: 3000
+            retryable-exceptions:
+              java.lang.IllegalArgumentException: false
+        convertNumberOutput:
+          destination: numberConvert
+          producer:
+            errorChannelEnabled: true
+
+        employeeVacationInput:
+          destination: employeeVacation
+          contentType: application/json
+        employeeVacationOutput:
+          destination: employeeVacation
+          contentType: application/json
+
+        pollableInput:
+          destination: pollTopic
+          group: pollGroup
+        pollableOutput:
+          destination: pollTopic
+          contentType: text/plain
+
+      default-binder: kafka
+
+      kafka:
+        binder:
+          brokers: localhost
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    binders:
+      enabled: true
