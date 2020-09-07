@@ -1,10 +1,9 @@
-package nix.sinitsyn.scs.springcloudstreamexample.service;
+package nix.sinitsyn.scs.springcloudstreamexample.sink;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import nix.sinitsyn.scs.springcloudstreamexample.messaging.PolledStream;
-import nix.sinitsyn.scs.springcloudstreamexample.messaging.SportEvent;
-import nix.sinitsyn.scs.springcloudstreamexample.model.Employee;
+import nix.sinitsyn.scs.springcloudstreamexample.messaging.EventStream;
 import nix.sinitsyn.scs.springcloudstreamexample.model.NotificationMessage;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
@@ -13,7 +12,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -23,22 +21,22 @@ public class NotificationService {
 
   private final PolledStream polledStream;
 
-  @StreamListener(target = SportEvent.EVENT_INPUT, condition = "headers['notificationType']=='email'")
+  @StreamListener(target = EventStream.EVENT_INPUT, condition = "headers['notificationType']=='email'")
   public void emailNotification(Message<NotificationMessage> message) {
     log.info("[○ EMAIL NOTIFICATION ○]: {}", message.getPayload());
   }
 
-  @StreamListener(target = SportEvent.EVENT_INPUT, condition = "headers['notificationType']=='sms'")
+  @StreamListener(target = EventStream.EVENT_INPUT, condition = "headers['notificationType']=='sms'")
   public void smsNotification(Message<NotificationMessage> message) {
     log.info("[♦ SMS NOTIFICATION ♦]: {}", message.getPayload());
   }
 
-  @StreamListener(target = SportEvent.EVENT_INPUT, condition = "headers['notificationType']=='telegram'")
+  @StreamListener(target = EventStream.EVENT_INPUT, condition = "headers['notificationType']=='telegram'")
   public void telegramNotification(Message<NotificationMessage> message) {
     log.info("[☺ TELEGRAM NOTIFICATION ☺]: {}", message.getPayload());
   }
 
-  @StreamListener(target = SportEvent.EVENT_INPUT, condition = "headers['notificationType']=='spam'")
+  @StreamListener(target = EventStream.EVENT_INPUT, condition = "headers['notificationType']=='spam'")
   public void spamHandler(Message<String> message) {
     String payload = message.getPayload();
     log.warn("[♀ SPAM ♀]: {}", message.getPayload());
@@ -48,12 +46,12 @@ public class NotificationService {
     throw new RuntimeException("Spam message. Try to retry");
   }
 
-  @StreamListener(target = SportEvent.EVENT_INPUT, condition = "headers['converting']=='true'")
+  @StreamListener(target = EventStream.EVENT_INPUT, condition = "headers['converting']=='true'")
   public void handleConvertedNumber(Object numberAsString) {
     log.info("[↨ SIMPLE NOTIFICATION ↨]: Your result of converting is {}", numberAsString);
   }
 
-  @StreamListener(target = SportEvent.EVENT_INPUT, condition = "headers['vacation']==true")
+  @StreamListener(target = EventStream.EVENT_INPUT, condition = "headers['vacation']==true")
   public void handleEmployeesWithVacation(Message<String[]> message) {
     log.info("These employees want a vacation: {}", Arrays.toString(message.getPayload()));
   }

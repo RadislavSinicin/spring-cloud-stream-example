@@ -7,13 +7,13 @@ import org.springframework.messaging.SubscribableChannel;
 
 public interface NumberConvert {
 
-  String CONVERT_NUMBER_OUTPUT = "convertNumberOutput";
-  String CONVERT_NUMBER_INPUT = "convertNumberInput";
+  String INPUT = "convertNumberOutput";
+  String OUTPUT = "convertNumberInput";
 
-  @Input(NumberConvert.CONVERT_NUMBER_INPUT)
+  @Input(NumberConvert.INPUT)
   SubscribableChannel convertNumberInput();
 
-  @Output(NumberConvert.CONVERT_NUMBER_OUTPUT)
+  @Output(NumberConvert.OUTPUT)
   MessageChannel convertNumberOutput();
 
 }

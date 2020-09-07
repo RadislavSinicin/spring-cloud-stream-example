@@ -1,14 +1,14 @@
-package nix.sinitsyn.scs.springcloudstreamexample.service;
+package nix.sinitsyn.scs.springcloudstreamexample.handler;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @Log4j2
-public class ErrorHandlerService {
+public class ErrorHandler {
 
   @ServiceActivator(inputChannel = "events.sportEventsGroup.errors")
   public void handleEventError(Message<?> failedMessage) {
@@ -26,7 +26,7 @@ public class ErrorHandlerService {
   }
 
   private void logError(String logMsgFormat, Message<?> failedMessage) {
-    Exception throwable = (Exception) failedMessage.getPayload();
-    log.error(logMsgFormat, throwable.getMessage());
+    Exception exception = (Exception) failedMessage.getPayload();
+    log.error(logMsgFormat, exception.getMessage());
   }
 }

@@ -7,12 +7,12 @@ import org.springframework.messaging.SubscribableChannel;
 
 public interface EmployeeVacation {
 
-  String EMPLOYEE_VACATION_INPUT = "employeeVacationInput";
-  String EMPLOYEE_VACATION_OUTPUT = "employeeVacationOutput";
+  String INPUT = "employeeVacationInput";
+  String OUTPUT = "employeeVacationOutput";
 
-  @Input(EmployeeVacation.EMPLOYEE_VACATION_INPUT)
+  @Input(EmployeeVacation.INPUT)
   SubscribableChannel employeeVacationInput();
 
-  @Output(EMPLOYEE_VACATION_OUTPUT)
+  @Output(OUTPUT)
   MessageChannel employeeVacationOutput();
 }

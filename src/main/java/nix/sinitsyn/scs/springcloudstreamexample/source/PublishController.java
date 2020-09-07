@@ -1,15 +1,12 @@
-package nix.sinitsyn.scs.springcloudstreamexample.controller;
+package nix.sinitsyn.scs.springcloudstreamexample.source;
 
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import nix.sinitsyn.scs.springcloudstreamexample.common.CustomSources;
 import nix.sinitsyn.scs.springcloudstreamexample.messaging.EmployeeVacation;
 import nix.sinitsyn.scs.springcloudstreamexample.messaging.NumberConvert;
 import nix.sinitsyn.scs.springcloudstreamexample.messaging.PolledStream;
-import nix.sinitsyn.scs.springcloudstreamexample.messaging.SportEvent;
+import nix.sinitsyn.scs.springcloudstreamexample.messaging.EventStream;
 import nix.sinitsyn.scs.springcloudstreamexample.model.Employee;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,20 +28,20 @@ public class PublishController {
 
   private final Map<String, String> sportMessages;
   private final Map<Integer, String> notifications;
-  private final SportEvent sportEvent;
+  private final EventStream eventStream;
   private final NumberConvert numberConvert;
   private final EmployeeVacation employeeVacation;
   private final PolledStream polledStream;
 
   public PublishController(@Qualifier("sportMessages") Map<String, String> sportMessages,
                            @Qualifier("notifications") Map<Integer, String> notifications,
-                           SportEvent sportEvent,
+                           EventStream eventStream,
                            NumberConvert numberConvert,
                            EmployeeVacation employeeVacation,
                            PolledStream polledStream) {
     this.sportMessages = sportMessages;
     this.notifications = notifications;
-    this.sportEvent = sportEvent;
+    this.eventStream = eventStream;
     this.numberConvert = numberConvert;
     this.employeeVacation = employeeVacation;
     this.polledStream = polledStream;
@@ -56,11 +53,11 @@ public class PublishController {
     String message = sportMessages.getOrDefault(sport, "empty");
     String notification = notifications.getOrDefault(notificationType, "spam");
     log.info("Posting message {}", message);
-    sportEvent.filterEventOutput().send(MessageBuilder
+    eventStream.filterEventOutput().send(MessageBuilder
         .withPayload(message)
         .setHeader("notificationType", notification)
         .build());
-    return String.format(MESSAGE, message, sportEvent.filterEventOutput().toString());
+    return String.format(MESSAGE, message, eventStream.filterEventOutput().toString());
   }
 
   @GetMapping("/convert/{number}")
@@ -93,7 +90,7 @@ public class PublishController {
   }
 
   @GetMapping("/poll")
-  public List<String> getAllPolledMessages() {
+  public List<String> getPolledMessages() {
     List<String> messages = new ArrayList<>();
     boolean hasMessage = true;
     while (hasMessage) {

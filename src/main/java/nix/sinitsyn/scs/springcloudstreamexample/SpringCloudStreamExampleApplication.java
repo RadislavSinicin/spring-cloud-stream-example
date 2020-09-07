@@ -3,7 +3,7 @@ package nix.sinitsyn.scs.springcloudstreamexample;
 import nix.sinitsyn.scs.springcloudstreamexample.messaging.EmployeeVacation;
 import nix.sinitsyn.scs.springcloudstreamexample.messaging.NumberConvert;
 import nix.sinitsyn.scs.springcloudstreamexample.messaging.PolledStream;
-import nix.sinitsyn.scs.springcloudstreamexample.messaging.SportEvent;
+import nix.sinitsyn.scs.springcloudstreamexample.messaging.EventStream;
 import nix.sinitsyn.scs.springcloudstreamexample.messaging.TimeProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableBinding({
 		Processor.class,
 		TimeProcessor.class,
-		SportEvent.class,
+		EventStream.class,
 		NumberConvert.class,
 		EmployeeVacation.class,
 		PolledStream.class})

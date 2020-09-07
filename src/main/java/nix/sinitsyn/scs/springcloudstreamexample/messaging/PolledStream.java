@@ -7,12 +7,12 @@ import org.springframework.messaging.MessageChannel;
 
 public interface PolledStream {
 
-  String POLLABLE_INPUT = "pollableInput";
-  String POLLABLE_OUTPUT = "pollableOutput";
+  String INPUT = "pollableInput";
+  String OUTPUT = "pollableOutput";
 
-  @Input(PolledStream.POLLABLE_INPUT)
+  @Input(PolledStream.INPUT)
   PollableMessageSource pollableInput();
 
-  @Output(PolledStream.POLLABLE_OUTPUT)
+  @Output(PolledStream.OUTPUT)
   MessageChannel pollableOutput();
 }
